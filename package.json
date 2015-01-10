@@ -1,0 +1,26 @@
+{
+  "name": "ksana2015-stacktoc",
+  "version": "1.0.0",
+  "description": "compact toc view with stack ancestor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ksanaforge/ksana2015-stacktoc"
+  },
+  "keywords": [
+    "table",
+    "of",
+    "content",
+    "react",
+    "component"
+  ],
+  "author": "yapcheahshen@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ksanaforge/ksana2015-stacktoc/issues"
+  },
+  "homepage": "https://github.com/ksanaforge/ksana2015-stacktoc"
+}
