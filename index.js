@@ -158,7 +158,7 @@ var Children=React.createClass({
 
 var stacktoc = React.createClass({
   getInitialState: function() {
-    return {bar: "world",tocReady:false,cur:0};//403
+    return {bar: "world",tocReady:false,cur:this.props.current|0};//403
   },
   buildtoc: function() {
       var toc=this.props.data;
@@ -196,7 +196,7 @@ var stacktoc = React.createClass({
     this.setState({cur:n});
     var child=this.props.data[n];
     if (!(child.hasChild && this.props.showTextOnLeafNodeOnly)) {
-		if (this.props.showText)  this.props.showText(n);
+		  if (this.props.showText)  this.props.showText(n);
     }
   },
   findByVoff:function(voff) {
@@ -283,7 +283,6 @@ var stacktoc = React.createClass({
       this.props.showText(parseInt(target.dataset.n));
     }
   },
-
   render: function() {
     if (!this.props.data || !this.props.data.length) return E("div",null);
     var depth=this.props.data[this.state.cur].depth+1;
@@ -345,10 +344,10 @@ var enumChildren=function(toc,cur) {
     }
     return children;
 }
-var genToc=function(texts,depths,voffs,title) {
+var genToc=function(toc,title) {
     var out=[{depth:0,text:title||ksana.js.title}];
-    if (texts) for (var i=0;i<texts.length;i++) {
-      out.push({text:texts[i],depth:depths[i], voff:voffs[i]});
+    if (toc.texts) for (var i=0;i<toc.texts.length;i++) {
+      out.push({text:toc.texts[i],depth:toc.depths[i], voff:toc.vpos[i]});
     }
     return out; 
 }
