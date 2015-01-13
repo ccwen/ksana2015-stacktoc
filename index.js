@@ -20,6 +20,8 @@ var trimText=function(text,opts) {
     } 
     return text;
 }
+var ganzhi="　甲乙丙丁戊己庚辛壬癸子丑寅卯辰巳午未申酉戌亥";
+
 var renderDepth=function(depth,opts,nodetype) {
   var out=[];
   if (opts.tocstyle=="vertical_line") {
@@ -31,12 +33,15 @@ var renderDepth=function(depth,opts,nodetype) {
       }
     }
     return out;    
+  } else if (opts.tocstyle=="ganzhi") {
+    return E("span", null, ganzhi[depth]+".");
   } else {
     if (depth) return E("span", null, depth, ".")
     else return null;
   }
   return null;
 };
+
 
 var Ancestors=React.createClass({
   goback:function(e) {
@@ -158,11 +163,10 @@ var Children=React.createClass({
 
 var stacktoc = React.createClass({
   getInitialState: function() {
-    return {bar: "world",tocReady:false,cur:this.props.current|0};//403
+    return {bar: "world",cur:this.props.current|0};//403
   },
-  buildtoc: function() {
-      var toc=this.props.data;
-      if (!toc || !toc.length) return;  
+  buildtoc: function(toc) {
+    if (!toc || !toc.length) return;  
       var depths=[];
       var prev=0;
       for (var i=0;i<toc.length;i++) {
@@ -177,20 +181,14 @@ var stacktoc = React.createClass({
         depths[depth]=i;
         prev=depth;
       } 
+
   }, 
 
-  rebuildToc:function() {
-    if (!this.state.tocReady && this.props.data && this.props.data.length) {
-      this.buildtoc();
-      this.setState({tocReady:true});
+  componentWillReceiveProps:function(nextProps) {
+    if (nextProps.data && nextProps.data.length && nextProps.data != this.props.data) {
+      this.buildtoc(nextProps.data);
     }
-  },
-  componentDidMount:function() {
-    this.rebuildToc();
-  },
-  componentDidUpdate:function() {
-    this.rebuildToc();
-  },   
+  }, 
   setCurrent:function(n) {
     n=parseInt(n);
     this.setState({cur:n});
@@ -209,6 +207,9 @@ var stacktoc = React.createClass({
   shouldComponentUpdate:function(nextProps,nextState) {
     if (nextProps.goVoff&&nextProps.goVoff !=this.props.goVoff) {
       nextState.cur=this.findByVoff(nextProps.goVoff);
+    }
+    if (nextProps.current != this.props.current) {
+      nextState.cur=nextProps.current;
     }
     return true;
   },
@@ -331,6 +332,7 @@ var enumChildren=function(toc,cur) {
     if (toc[cur+1].depth!= 1+toc[cur].depth) return children;  // no children node
     var n=cur+1;
     var child=toc[n];
+    
     while (child) {
       children.push(n);
       var next=toc[n+1];
