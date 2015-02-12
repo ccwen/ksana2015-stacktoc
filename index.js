@@ -1,4 +1,4 @@
-
+var React=(window&&window.React)||require("react");
 var E=React.createElement;
 var trimHit=function(hit) {
   if (hit>999) { 
